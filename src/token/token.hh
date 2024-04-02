@@ -10,6 +10,7 @@ namespace token
     {
     public:
         Token(uint32_t row, uint32_t col);
+        virtual ~Token() = default;
 
         [[nodiscard]] uint32_t get_row() const;
         [[nodiscard]] uint32_t get_col() const;
