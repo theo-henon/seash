@@ -1,7 +1,11 @@
+#include <cstdlib>
 #include <iostream>
+
+#include "token/word.hh"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    token::Word echo(0, 0, "echo");
+    std::cout << echo.to_string() << std::endl;
     return 0;
 }
