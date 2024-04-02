@@ -8,7 +8,7 @@ namespace token
     {
     public:
         Word(uint32_t row, uint32_t col, std::string value);
-        virtual ~Word() = default;
+        ~Word() override = default;
 
         [[nodiscard]] const std::string& to_string() const override;
 

@@ -1,11 +1,18 @@
-#include <cstdlib>
 #include <iostream>
+#include <cstdlib>
 
-#include "token/word.hh"
+#include "lexer/lexer.hh"
 
 int main()
 {
-    token::Word echo(0, 0, "echo");
-    std::cout << echo.to_string() << std::endl;
-    return 0;
+    lexer::Lexer lexer(std::cin);
+    auto token = lexer.lex();
+    std::string cmd;
+    while (token != nullptr)
+    {
+        cmd += token->to_string() + " ";
+        token = lexer.lex();
+    }
+
+    return std::system(cmd.c_str());
 }
