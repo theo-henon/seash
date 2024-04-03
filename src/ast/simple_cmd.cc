@@ -14,8 +14,8 @@ namespace ast
         return lhs << *(simple_cmd.argv_.end() - 1);
     }
 
-    void SimpleCmd::add_arg(std::string arg)
+    void SimpleCmd::add_arg(const std::string& arg)
     {
-        argv_.push_back(std::move(arg));
+        argv_.push_back(arg);
     }
 } // namespace ast

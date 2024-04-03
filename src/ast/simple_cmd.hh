@@ -11,7 +11,7 @@ namespace ast
     public:
         [[nodiscard]] size_t argc() const;
 
-        void add_arg(std::string arg);
+        void add_arg(const std::string& arg);
 
         friend std::ostream& operator<<(std::ostream& lhs,
                                         const SimpleCmd& simple_cmd);
