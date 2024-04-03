@@ -1,5 +1,7 @@
 #include "simple_cmd.hh"
 
+#include <algorithm>
+
 #include "visitor/visitor.hh"
 
 namespace ast
@@ -21,6 +23,13 @@ namespace ast
             cmd += *i + " ";
         cmd += *(argv_.end() - 1);
         return cmd;
+    }
+
+    const char** SimpleCmd::c_args() const
+    {
+        const char **args = new const char*[argv_.size() + 1];
+        std::transform(argv_.begin(), argv_.end(), args, [](const std::string& str){return str.c_str();});
+        return args;
     }
 
 } // namespace ast
