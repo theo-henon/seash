@@ -4,21 +4,19 @@
 #include <string>
 #include <vector>
 
-namespace visitor
-{
-    class Visitor;
-}
+#include "ast.hh"
 
 namespace ast
 {
-    class SimpleCmd
+    class SimpleCmd : public Ast
     {
     public:
-        [[nodiscard]] size_t argc() const;
+        ~SimpleCmd() override = default;
 
+        [[nodiscard]] size_t argc() const;
         void add_arg(const std::string& arg);
         [[nodiscard]] std::string concat_args() const;
-        int accept(visitor::Visitor* visitor);
+        int accept(visitor::Visitor* visitor) override;
 
     private:
         std::vector<std::string> argv_;

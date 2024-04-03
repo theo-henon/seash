@@ -1,2 +1,4 @@
 add_library(ast
-    simple_cmd.cc simple_cmd.hh)
+    simple_cmd.cc simple_cmd.hh
+        ast.cc
+        ast.hh)
