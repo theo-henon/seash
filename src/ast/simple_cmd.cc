@@ -27,8 +27,4 @@ namespace ast
         return cmd;
     }
 
-    const std::string& SimpleCmd::get_arg(size_t index) const
-    {
-        return argv_[index];
-    }
 } // namespace ast
