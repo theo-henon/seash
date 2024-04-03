@@ -4,10 +4,6 @@
 
 namespace ast
 {
-    size_t SimpleCmd::argc() const
-    {
-        return argv_.size();
-    }
 
     void SimpleCmd::add_arg(const std::string& arg)
     {
