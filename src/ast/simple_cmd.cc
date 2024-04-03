@@ -25,10 +25,14 @@ namespace ast
         return cmd;
     }
 
-    const char** SimpleCmd::c_args() const
+    char** SimpleCmd::c_args() const
     {
-        const char **args = new const char*[argv_.size() + 1];
-        std::transform(argv_.begin(), argv_.end(), args, [](const std::string& str){return str.c_str();});
+        char **args = new char*[argv_.size() + 1];
+        for (size_t i = 0; i < argv_.size(); i++)
+        {
+            args[i] = new char[argv_[i].size() + 1];
+            argv_[i].copy(args[i], argv_[i].size());
+        }
         return args;
     }
 
