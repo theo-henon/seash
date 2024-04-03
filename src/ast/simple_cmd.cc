@@ -1,13 +1,11 @@
 #include "simple_cmd.hh"
 
+#include <algorithm>
+
 #include "visitor/visitor.hh"
 
 namespace ast
 {
-    size_t SimpleCmd::argc() const
-    {
-        return argv_.size();
-    }
 
     void SimpleCmd::add_arg(const std::string& arg)
     {
@@ -25,6 +23,17 @@ namespace ast
             cmd += *i + " ";
         cmd += *(argv_.end() - 1);
         return cmd;
+    }
+
+    char** SimpleCmd::c_args() const
+    {
+        char **args = new char*[argv_.size() + 1];
+        for (size_t i = 0; i < argv_.size(); i++)
+        {
+            args[i] = new char[argv_[i].size() + 1];
+            argv_[i].copy(args[i], argv_[i].size());
+        }
+        return args;
     }
 
 } // namespace ast

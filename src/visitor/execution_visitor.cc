@@ -1,9 +1,37 @@
 #include "execution_visitor.hh"
 
+#include <unistd.h>
+#include <sys/wait.h>
+
 namespace visitor
 {
     int ExecutionVisitor::visit_simple_cmd(ast::SimpleCmd* simple_cmd) const
     {
-        return std::system(simple_cmd->concat_args().c_str());
+        char **args = simple_cmd->c_args();
+        pid_t pid = fork();
+        if (pid == -1)
+        {
+            std::perror("Failed to fork");
+            return 1;
+        }
+
+        if (pid == 0)
+        {
+            // Child
+            if (execvp(args[0], args) == -1)
+            {
+                std::perror(args[0]);
+                return 1;
+            }
+            return 0;
+        }
+        else
+        {
+            // Parent
+            delete[] args;
+            int status;
+            waitpid(pid, &status, 0);
+            return WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+        }
     }
 } // namespace visitor

@@ -13,8 +13,8 @@ namespace ast
     public:
         ~SimpleCmd() override = default;
 
-        [[nodiscard]] size_t argc() const;
         void add_arg(const std::string& arg);
+        [[nodiscard]] char** c_args() const;
         [[nodiscard]] std::string concat_args() const;
         int accept(visitor::Visitor* visitor) override;
 

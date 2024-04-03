@@ -3,7 +3,6 @@
 #include "lexer/lexer.hh"
 #include "parser/parser.hh"
 #include "visitor/execution_visitor.hh"
-#include "visitor/print_visitor.hh"
 
 int main()
 {
