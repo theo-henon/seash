@@ -1,5 +1,7 @@
 #include "simple_cmd.hh"
 
+#include "visitor/visitor.hh"
+
 namespace ast
 {
     size_t SimpleCmd::argc() const
@@ -7,15 +9,26 @@ namespace ast
         return argv_.size();
     }
 
-    std::ostream& operator<<(std::ostream& lhs, const SimpleCmd& simple_cmd)
-    {
-        for (size_t i = 0; i < simple_cmd.argv_.size() - 1 ; i++)
-            lhs << simple_cmd.argv_[i] << " ";
-        return lhs << *(simple_cmd.argv_.end() - 1);
-    }
-
     void SimpleCmd::add_arg(const std::string& arg)
     {
         argv_.push_back(arg);
+    }
+
+    int SimpleCmd::accept(visitor::Visitor* visitor)
+    {
+        return visitor->visit_simple_cmd(this);
+    }
+    std::string SimpleCmd::concat_args() const
+    {
+        std::string cmd;
+        for (auto i = argv_.begin(); i < argv_.end() - 1; i++)
+            cmd += *i + " ";
+        cmd += *(argv_.end() - 1);
+        return cmd;
+    }
+
+    const std::string& SimpleCmd::get_arg(size_t index) const
+    {
+        return argv_[index];
     }
 } // namespace ast

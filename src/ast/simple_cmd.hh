@@ -1,8 +1,13 @@
 #pragma once
 
-#include <ostream>
+#include <iostream>
 #include <string>
 #include <vector>
+
+namespace visitor
+{
+    class Visitor;
+}
 
 namespace ast
 {
@@ -12,10 +17,9 @@ namespace ast
         [[nodiscard]] size_t argc() const;
 
         void add_arg(const std::string& arg);
-
-        friend std::ostream& operator<<(std::ostream& lhs,
-                                        const SimpleCmd& simple_cmd);
-
+        [[nodiscard]] std::string concat_args() const;
+        int accept(visitor::Visitor* visitor);
+        [[nodiscard]] const std::string& get_arg(size_t index) const;
     private:
         std::vector<std::string> argv_;
     };
