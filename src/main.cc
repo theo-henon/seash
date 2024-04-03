@@ -1,18 +1,14 @@
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
 #include "lexer/lexer.hh"
+#include "parser/parser.hh"
 
 int main()
 {
     lexer::Lexer lexer(std::cin);
-    auto token = lexer.lex();
-    std::string cmd;
-    while (token != nullptr)
-    {
-        cmd += token->to_string() + " ";
-        token = lexer.lex();
-    }
-
-    return std::system(cmd.c_str());
+    parser::Parser parser(lexer);
+    auto simple_cmd = parser.parse_simple_cmd();
+    if (simple_cmd != nullptr)
+        std::cout << *simple_cmd << std::endl;
 }
