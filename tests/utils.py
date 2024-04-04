@@ -1,5 +1,6 @@
 import os
 import subprocess
+import pytest
 
 import config
 
@@ -38,3 +39,31 @@ def get_shell_scripts(folder_path: str):
             path = os.path.join(folder_path, file_name)
             scripts.append(ShellScript(path))
     return scripts
+
+
+def get_test_cases(scripts_path):
+    test_cases = []
+    for script in get_shell_scripts(scripts_path):
+        for method in config.METHODS:
+            test_cases.append((script, method))
+    return test_cases
+
+
+def get_test_name(test_case):
+    script, method = test_case
+    script_name = os.path.basename(script.path)
+    return f"{script_name}::{method}"
+
+
+def generate_tests(scripts_path):
+    @pytest.mark.parametrize("test_case", get_test_cases(scripts_path), ids=get_test_name)
+    def test_script(test_case):
+        script, method = test_case
+        if method == "stdin":
+            assert script.run_from_stdin() == script.run_from_stdin(use_ref=True)
+        elif method == "string":
+            assert script.run_from_str() == script.run_from_str(use_ref=True)
+        else:
+            assert script.run_from_stdin() == script.run_from_file(use_ref=True)
+
+    return test_script
