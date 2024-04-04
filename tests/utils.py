@@ -9,19 +9,26 @@ class ShellScript:
         self.path = path
 
     def run_from_stdin(self, use_ref: bool = False):
-        cmd = config.REF_STDIN_ARG if use_ref else config.STDIN_ARG
+        cmd = config.REF if use_ref else config.EXE
         with open(self.path, "r") as file:
             process = subprocess.Popen(cmd, stdin=file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         status = process.wait()
         return status, process.stdout.read().decode("utf-8"), process.stderr.read().decode("utf-8")
 
     def run_from_str(self, use_ref: bool = False):
-        # TODO
-        pass
+        cmd = config.REF + ["-c"] if use_ref else config.EXE + ["-c"]
+        with open(self.path, "r") as file:
+            cmd.append(file.read())
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            file.close()
+        status = process.wait()
+        return status, process.stdout.read().decode("utf-8"), process.stderr.read().decode("utf-8")
 
     def run_from_file(self, use_ref: bool = False):
-        # TODO
-        pass
+        cmd = config.REF + [self.path] if use_ref else config.EXE + [self.path]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        status = process.wait()
+        return status, process.stdout.read().decode("utf-8"), process.stderr.read().decode("utf-8")
 
 
 def get_shell_scripts(folder_path: str):

@@ -1,2 +1,3 @@
-STDIN_ARG = ["../cmake-build-debug/seash"]
-REF_STDIN_ARG = ["bash", "--posix"]
+EXE = ["../cmake-build-debug/seash"]
+REF = ["bash", "--posix"]
+METHODS = ("stdin", "string", "file")
