@@ -13,8 +13,9 @@ int main(int argc, char* argv[])
 {
     po::options_description options_desc("Options");
     options_desc.add_options()("help", "Produce help message")(
-        "c", po::value<std::string>(), "Execute script from string passed as argument")
-        ("pretty-print", "Enable pretty pretting of the AST");
+        "c,c", po::value<std::string>(),
+        "Execute script from string passed as argument")(
+        "pretty-print", "Enable pretty pretting of the AST");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, options_desc), vm);
@@ -61,8 +62,4 @@ int main(int argc, char* argv[])
             return simple_cmd->accept(&execution_visitor);
         }
     }
-
-
-
-    return 0;
 }
