@@ -10,8 +10,10 @@ namespace builtins
     int Builtins::run_builtin(const ast::SimpleCmd& simple_cmd,
                               const std::string& name) const
     {
+        int status = 0;
         if (name == "echo")
-            return echo_(simple_cmd);
-        return 0;
+            status = echo_(simple_cmd);
+        std::cout.flush();
+        return status;
     }
 } // namespace builtins
