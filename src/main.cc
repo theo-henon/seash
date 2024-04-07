@@ -8,13 +8,10 @@
 #include "visitor/execution_visitor.hh"
 #include "visitor/print_visitor.hh"
 
-int main(int argc, char* argv[])
+int parse_options(int argc, char** argv, bool& pretty_print,
+                  std::optional<std::string>& filename,
+                  std::optional<std::string>& script)
 {
-    bool pretty_print = false;
-    std::optional<std::string> filename;
-    std::optional<std::string> script;
-
-    // Parse options
     for (int i = 1; i < argc; i++)
     {
         if (std::string(argv[i]) == "-c")
@@ -36,11 +33,15 @@ int main(int argc, char* argv[])
 
     if (script && filename)
     {
-        std::cerr << "Unexpected argument: '" << *filename << '\''
-                  << std::endl;
+        std::cerr << "Unexpected argument: '" << *filename << '\'' << std::endl;
         return 1;
     }
+    return 0;
+}
 
+int evaluate_options(bool pretty_print, std::optional<std::string>& filename,
+                     std::optional<std::string>& script)
+{
     std::unique_ptr<ast::SimpleCmd> simple_cmd;
     if (script)
     {
@@ -78,4 +79,15 @@ int main(int argc, char* argv[])
         visitor::ExecutionVisitor execution_visitor;
         return simple_cmd->accept(&execution_visitor);
     }
+}
+
+int main(int argc, char* argv[])
+{
+    bool pretty_print = false;
+    std::optional<std::string> filename;
+    std::optional<std::string> script;
+
+    if (parse_options(argc, argv, pretty_print, filename, script) != 0)
+        return 1;
+    return evaluate_options(pretty_print, filename, script);
 }
