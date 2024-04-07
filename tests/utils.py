@@ -10,14 +10,14 @@ class ShellScript:
         self.path = path
 
     def run_from_stdin(self, use_ref: bool = False):
-        cmd = config.REF if use_ref else config.EXE
+        cmd = config.REF.copy() if use_ref else config.EXE.copy()
         with open(self.path, "r") as file:
             process = subprocess.Popen(cmd, stdin=file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         status = process.wait()
         return status, process.stdout.read().decode("utf-8"), process.stderr.read().decode("utf-8")
 
     def run_from_str(self, use_ref: bool = False):
-        cmd = config.REF + ["-c"] if use_ref else config.EXE + ["-c"]
+        cmd = config.REF.copy() + ["-c"] if use_ref else config.EXE.copy() + ["-c"]
         with open(self.path, "r") as file:
             cmd.append(file.read())
             process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -25,19 +25,40 @@ class ShellScript:
         return status, process.stdout.read().decode("utf-8"), process.stderr.read().decode("utf-8")
 
     def run_from_file(self, use_ref: bool = False):
-        cmd = config.REF + [self.path] if use_ref else config.EXE + [self.path]
+        cmd = config.REF.copy() + [self.path] if use_ref else config.EXE.copy() + [self.path]
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         status = process.wait()
         return status, process.stdout.read().decode("utf-8"), process.stderr.read().decode("utf-8")
 
-    def pretty_print_run(self, use_ref: bool = False):
-        cmd = config.REF if use_ref else config.EXE
+    def run_pretty_print_from_stdin(self, use_ref: bool = False):
+        cmd = config.REF.copy() if use_ref else config.EXE.copy()
         with open(self.path, "r") as file:
+            process1 = subprocess.Popen(config.EXE_PRETTY_PRINT, stdin=file, stdout=subprocess.PIPE)
+            process2 = subprocess.Popen(cmd, stdin=process1.stdout, stdout=subprocess.PIPE)
+            output, _ = process2.communicate()
+            process1.wait()
+            process2.wait()
+        return process2.returncode, output.decode("utf-8")
+
+    def run_pretty_print_from_str(self, use_ref: bool = False):
+        cmd = config.REF.copy() + ["-c"] if use_ref else config.EXE.copy() + ["-c"]
+        with open(self.path, "r") as file:
+            cmd.append(file.read())
             process1 = subprocess.Popen(config.EXE_PRETTY_PRINT, stdout=subprocess.PIPE)
             process2 = subprocess.Popen(cmd, stdin=process1.stdout, stdout=subprocess.PIPE)
             output, _ = process2.communicate()
             process1.wait()
             process2.wait()
+        return process2.returncode, output.decode("utf-8")
+
+    def run_pretty_print_from_file(self, use_ref: bool = False):
+        cmd = config.REF.copy() if use_ref else config.EXE.copy()
+        cmd.append(self.path)
+        process1 = subprocess.Popen(config.EXE_PRETTY_PRINT, stdout=subprocess.PIPE)
+        process2 = subprocess.Popen(cmd, stdin=process1.stdout, stdout=subprocess.PIPE)
+        output, _ = process2.communicate()
+        process1.wait()
+        process2.wait()
         return process2.returncode, output.decode("utf-8")
 
 
