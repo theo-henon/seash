@@ -1,13 +1,16 @@
 #include "execution_visitor.hh"
 
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 namespace visitor
 {
     int ExecutionVisitor::visit_simple_cmd(ast::SimpleCmd* simple_cmd) const
     {
-        char **args = simple_cmd->c_args();
+        if (builtins::Builtins::is_builtin(*simple_cmd))
+            return builtins_.run_builtin(*simple_cmd, simple_cmd->get_arg(0));
+
+        char** args = simple_cmd->c_args();
         pid_t pid = fork();
         if (pid == -1)
         {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "builtins/builtins.hh"
 #include "visitor.hh"
 
 namespace visitor
@@ -8,5 +9,8 @@ namespace visitor
     {
     public:
         int visit_simple_cmd(ast::SimpleCmd* simple_cmd) const override;
+
+    private:
+        builtins::Builtins builtins_{};
     };
 } // namespace visitor
