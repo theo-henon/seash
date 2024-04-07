@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_options(-Wall -Werror -Wextra -Wold-style-cast -pedantic)
 
-find_package(Boost REQUIRED COMPONENTS program_options)
-
 include_directories(src)
 
 add_executable(seash)

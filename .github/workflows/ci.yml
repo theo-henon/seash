@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev-1.0
+  pull_request:
+    branches:
+      - main
+      - dev-1.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install CMake
+        run: sudo apt-get install -y cmake
+
+      - name: Install Pytest
+        run: pip install pytest
+
+      - name: Configure and build project
+        run: |
+          mkdir cmake-build-debug
+          cd cmake-build-debug
+          cmake ..
+          make
+
+      - name: Run tests
+        run: |
+          cd tests
+          pytest
+
+      - name: Reject pushes to main on failure
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        run: exit 1
+
+      - name: Reject pushes to dev-1.0 on failure
+        if: ${{ failure() && github.ref == 'refs/heads/dev-1.0' }}
+        run: exit 1
