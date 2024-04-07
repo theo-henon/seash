@@ -8,7 +8,7 @@ add_compile_options(-Wall -Werror -Wextra -Wold-style-cast -pedantic)
 
 find_package(Boost REQUIRED COMPONENTS program_options)
 
-include_directories(src ${Boost_INCLUDE_DIRS})
+include_directories(src)
 
 add_executable(seash)
 target_link_libraries(seash)
