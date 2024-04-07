@@ -32,7 +32,9 @@ namespace ast
         {
             args[i] = new char[argv_[i].size() + 1];
             argv_[i].copy(args[i], argv_[i].size());
+            args[i][argv_[i].size()] = '\0';
         }
+        args[argv_.size()] = nullptr;
         return args;
     }
 
