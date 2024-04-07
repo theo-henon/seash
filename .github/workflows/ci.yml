@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - dev-1.0
-      - dev-1.0-tests/ci
   pull_request:
     branches:
       - main
@@ -36,3 +35,7 @@ jobs:
         run: |
           cd tests
           pytest
+
+      - name: Reject pushes to main on failure
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        run: exit 1
