@@ -12,10 +12,6 @@ namespace ast
         argv_.push_back(arg);
     }
 
-    int SimpleCmd::accept(visitor::Visitor* visitor)
-    {
-        return visitor->visit_simple_cmd(this);
-    }
     std::string SimpleCmd::concat_args() const
     {
         std::string cmd;
@@ -38,4 +34,18 @@ namespace ast
         return args;
     }
 
+    size_t SimpleCmd::argc() const
+    {
+        return argv_.size();
+    }
+
+    const std::string& SimpleCmd::get_arg(size_t index) const
+    {
+        return argv_[index];
+    }
+
+    int SimpleCmd::accept(visitor::Visitor* visitor)
+    {
+        return visitor->visit_simple_cmd(this);
+    }
 } // namespace ast
