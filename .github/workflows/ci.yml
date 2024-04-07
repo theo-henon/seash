@@ -39,3 +39,7 @@ jobs:
       - name: Reject pushes to main on failure
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         run: exit 1
+
+      - name: Reject pushes to dev-1.0 on failure
+        if: ${{ failure() && github.ref == 'refs/heads/dev-1.0' }}
+        run: exit 1
