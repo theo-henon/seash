@@ -2,7 +2,7 @@
 
 namespace builtins
 {
-    int Echo::operator()(const ast::SimpleCmd& simple_cmd)
+    int Echo::operator()(const ast::SimpleCmd& simple_cmd) const
     {
         size_t argc = simple_cmd.argc();
         for (size_t i = 0; i < argc - 1; i++)

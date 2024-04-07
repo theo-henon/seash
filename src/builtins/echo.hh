@@ -6,6 +6,6 @@ namespace builtins
     class Echo
     {
     public:
-        int operator()(const ast::SimpleCmd& simple_cmd);
+        int operator()(const ast::SimpleCmd& simple_cmd) const;
     };
 } // namespace builtins
