@@ -12,7 +12,8 @@ namespace visitor
         PrintVisitor();
         explicit PrintVisitor(std::ostream& output);
 
-        int visit_simple_cmd(ast::SimpleCmd* simple_cmd) const override;
+        int visit_simple_cmd(ast::SimpleCmd* simple_cmd) override;
+        int visit_pipeline(ast::Pipeline* pipeline) override;
 
     private:
         std::ostream& output_;

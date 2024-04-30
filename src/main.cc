@@ -1,14 +1,17 @@
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <optional>
 #include <sstream>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include "lexer/lexer.hh"
 #include "parser/parser.hh"
 #include "visitor/execution_visitor.hh"
 #include "visitor/print_visitor.hh"
 
-int parse_options(int argc, char** argv, bool& pretty_print,
+/*int parse_options(int argc, char** argv, bool& pretty_print,
                   std::optional<std::string>& filename,
                   std::optional<std::string>& script)
 {
@@ -79,15 +82,37 @@ int evaluate_options(bool pretty_print, std::optional<std::string>& filename,
         visitor::ExecutionVisitor execution_visitor;
         return simple_cmd->accept(&execution_visitor);
     }
-}
+}*/
 
-int main(int argc, char* argv[])
+// int main(/*int argc, char* argv[]*/)
+//{
+//     bool pretty_print = false;
+//     std::optional<std::string> filename;
+//     std::optional<std::string> script;
+//
+//     if (parse_options(argc, argv, pretty_print, filename, script) != 0)
+//         return 1;
+//     return evaluate_options(pretty_print, filename, script);
+// }
+
+int main()
 {
-    bool pretty_print = false;
-    std::optional<std::string> filename;
-    std::optional<std::string> script;
+    ast::SimpleCmd cmd1;
+    cmd1.add_arg("echo");
+    cmd1.add_arg("toto");
 
-    if (parse_options(argc, argv, pretty_print, filename, script) != 0)
-        return 1;
-    return evaluate_options(pretty_print, filename, script);
+    ast::SimpleCmd cmd2;
+    cmd2.add_arg("cat");
+
+    ast::SimpleCmd cmd3;
+    cmd3.add_arg("cat");
+    cmd3.add_arg("-e");
+
+    ast::Pipeline pipeline;
+    pipeline.add_cmd(&cmd1);
+    pipeline.add_cmd(&cmd2);
+    pipeline.add_cmd(&cmd3);
+
+    visitor::ExecutionVisitor visitor;
+    return pipeline.accept(&visitor);
 }

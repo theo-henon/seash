@@ -5,7 +5,7 @@
 
 namespace visitor
 {
-    int ExecutionVisitor::visit_simple_cmd(ast::SimpleCmd* simple_cmd) const
+    int ExecutionVisitor::visit_simple_cmd(ast::SimpleCmd* simple_cmd)
     {
         if (builtins::Builtins::is_builtin(*simple_cmd))
             return builtins_.run_builtin(*simple_cmd, simple_cmd->get_arg(0));
@@ -36,5 +36,10 @@ namespace visitor
             waitpid(pid, &status, 0);
             return WIFEXITED(status) ? WEXITSTATUS(status) : 1;
         }
+    }
+    int ExecutionVisitor::visit_pipeline(__attribute_maybe_unused__ ast::Pipeline* pipeline)
+    {
+        // TODO
+        throw std::logic_error("Not yet implemented");
     }
 } // namespace visitor

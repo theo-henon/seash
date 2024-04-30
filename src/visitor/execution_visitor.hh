@@ -8,7 +8,8 @@ namespace visitor
     class ExecutionVisitor : public Visitor
     {
     public:
-        int visit_simple_cmd(ast::SimpleCmd* simple_cmd) const override;
+        int visit_simple_cmd(ast::SimpleCmd* simple_cmd) override;
+        int visit_pipeline(ast::Pipeline* pipeline) override;
 
     private:
         builtins::Builtins builtins_{};
