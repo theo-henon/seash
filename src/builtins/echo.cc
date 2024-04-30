@@ -11,9 +11,9 @@ namespace builtins
             return 0;
         }
 
-        for (size_t i = 0; i < argc - 1; i++)
+        for (size_t i = 1; i < argc - 1; i++)
             std::cout << simple_cmd.get_arg(i) << ' ';
-        std::cout << simple_cmd.get_arg(argc);
+        std::cout << simple_cmd.get_arg(argc - 1);
         std::cout << '\n';
         std::cout.flush();
         return 0;
