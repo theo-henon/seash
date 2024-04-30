@@ -1,5 +1,7 @@
 #include "pipeline.hh"
 
+#include "visitor/visitor.hh"
+
 namespace ast
 {
     bool Pipeline::negate() const
@@ -12,8 +14,18 @@ namespace ast
         return cmds_.size();
     }
 
-    const SimpleCmd* Pipeline::get_cmd(size_t index) const
+    SimpleCmd* Pipeline::get_cmd(size_t index) const
     {
         return cmds_[index];
+    }
+
+    void Pipeline::add_cmd(SimpleCmd* cmd)
+    {
+        cmds_.push_back(cmd);
+    }
+
+    int Pipeline::accept(visitor::Visitor* visitor)
+    {
+        return visitor->visit_pipeline(this);
     }
 } // namespace ast

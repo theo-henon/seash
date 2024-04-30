@@ -15,8 +15,10 @@ namespace ast
 
         [[nodiscard]] bool negate() const;
         [[nodiscard]] size_t size() const;
-        [[nodiscard]] const SimpleCmd* get_cmd(size_t index) const;
+        [[nodiscard]] SimpleCmd* get_cmd(size_t index) const;
+        void add_cmd(SimpleCmd* cmd);
         int accept(visitor::Visitor* visitor) override;
+
     private:
         std::vector<SimpleCmd*> cmds_;
         bool negate_;
